@@ -1,6 +1,8 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { ApolloProvider } from '@apollo/client';
+import client from '../apollo/client';
 
 const GlobalStyle = createGlobalStyle`
   body { 
@@ -18,7 +20,7 @@ interface ThemeInterface {
 
 const theme: ThemeInterface = {
   colors: {
-    primary: '#0070f3',
+    primary: '#6c38ff',
   }
 };
 
@@ -27,7 +29,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <ApolloProvider client={client}>
+          <Component {...pageProps} />
+        </ApolloProvider>
       </ThemeProvider>
     </>
   );
