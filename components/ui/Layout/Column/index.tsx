@@ -10,7 +10,7 @@ const Column: React.FC<ColumnProps> = (props): React.ReactElement => {
   };
 
   return(
-    <Styled.Container style={dynamicStyles} >
+    <Styled.Container style={dynamicStyles}>
       { props.children }
     </Styled.Container>
   );

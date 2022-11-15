@@ -1,37 +1,39 @@
 import React from 'react';
-import Icons from '../../Icons';
+import Animations from '../../../animations';
 import Layout from '../../Layout';
-import { VerticalProps } from './interfaces';
+import { MenuItem, VerticalProps } from './interfaces';
 import Styled from './styled';
 
 
-const Vertical: React.FC<VerticalProps> = (): React.ReactElement => {
+const Vertical: React.FC<VerticalProps> = (props): React.ReactElement => {
+  const onClickHandler = (index: number) => {
+    return (): void => {
+      props.selectItem(index);
+    };
+  };
+
+  const renderMenu = (): React.ReactElement[] => {
+    const menuItems = props.menuItems.map((menuItem: MenuItem, index: number) => (
+      <Layout.Column key={index} padding='0px'>
+        <Styled.MenuItem onClick={onClickHandler(index)} selectedItemIndex={props.selectedItem} menuItemIndex={index}>
+          <Styled.IconContainer>
+            {menuItem.icon({})}
+          </Styled.IconContainer>
+          {menuItem.name}
+        </Styled.MenuItem>
+      </Layout.Column>
+    ));
+
+    return menuItems;
+  };
+
   return(
     <Styled.Container>
+      <Animations.SlideX index={props.selectedItem}>
+        <Styled.MenuMaker />
+      </Animations.SlideX>
       <Layout.Row flexDirection='column'>
-        <Layout.Column>
-          <Styled.MenuItem>
-            <Styled.IconContainer>
-              <Icons.Stack3D /> 
-            </Styled.IconContainer>
-            Inbox
-          </Styled.MenuItem>
-        </Layout.Column>
-        <Layout.Column>
-          <Styled.MenuItem><Icons.Stack3D /> Draft</Styled.MenuItem>
-        </Layout.Column>
-        <Layout.Column>
-          <Styled.MenuItem><Icons.Stack3D /> Starred</Styled.MenuItem>
-        </Layout.Column>
-        <Layout.Column>
-          <Styled.MenuItem><Icons.Stack3D /> Sent</Styled.MenuItem>
-        </Layout.Column>
-        <Layout.Column>
-          <Styled.MenuItem><Icons.Stack3D /> Trash</Styled.MenuItem>
-        </Layout.Column>
-        <Layout.Column>
-          <Styled.MenuItem><Icons.Stack3D /> Spam</Styled.MenuItem>
-        </Layout.Column>
+        {renderMenu()}
       </Layout.Row>
     </Styled.Container>
   );
